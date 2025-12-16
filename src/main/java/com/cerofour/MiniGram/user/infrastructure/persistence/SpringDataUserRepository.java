@@ -1,0 +1,24 @@
+package com.cerofour.MiniGram.user.infrastructure.persistence;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface SpringDataUserRepository extends JpaRepository<UserEntity, Integer> {
+
+    Page<UserEntity> findAll(Pageable pageable);
+
+    /**
+     * Busca todos los usuarios cuyo campo 'username' comienza con el prefijo dado.
+     * Spring Data traduce este nombre de método a la cláusula SQL 'WHERE username LIKE ?%'
+     * * @param prefix El string inicial (ej: "spring")
+     * @return Una lista de entidades User coincidentes
+     */
+    Page<UserEntity> findByUsernameStartingWith(String preffix, Pageable pageable);
+
+    Optional<UserEntity> findByUsername(String username);
+
+    Optional<UserEntity> findByEmail(String email);
+}
