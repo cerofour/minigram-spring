@@ -12,7 +12,7 @@ public class ExternalNotificationAdapter implements NotificationPort {
     }
 
     @Override
-    public void sendNotification(String message) {
-        System.out.printf("Sending message: '%s' to all subscribers", message);
+    public void sendNotification(String email, String message) {
+        System.out.printf("Sending message: '%s' to '%s'", message, email);
     }
 }

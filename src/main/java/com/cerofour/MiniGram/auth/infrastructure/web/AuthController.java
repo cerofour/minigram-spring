@@ -1,7 +1,11 @@
 package com.cerofour.MiniGram.auth.infrastructure.web;
 
+import com.cerofour.MiniGram.auth.application.in.SignInUseCase;
 import com.cerofour.MiniGram.auth.application.in.SignUpUseCase;
+import com.cerofour.MiniGram.auth.domain.AuthenticationResult;
+import com.cerofour.MiniGram.auth.domain.SignInCommand;
 import com.cerofour.MiniGram.auth.domain.SignUpCommand;
+import com.cerofour.MiniGram.auth.infrastructure.web.dto.SignInUserRequest;
 import com.cerofour.MiniGram.auth.infrastructure.web.dto.SignupUserRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
+    private final SignInUseCase signInUseCase;
 
-    @PostMapping("")
+    @PostMapping("/signUp")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignupUserRequest request) {
 
         signUpUseCase.signUp(
@@ -35,5 +40,12 @@ public class AuthController {
         return ResponseEntity
                 .status(201)
                 .build();
+    }
+
+    @PostMapping("/signIn")
+    public ResponseEntity<AuthenticationResult> signIn(@RequestBody @Valid SignInUserRequest request) {
+
+        return ResponseEntity.ok(signInUseCase.signIn(
+                new SignInCommand(request.getUsername(), request.getPassword())));
     }
 }

@@ -1,5 +1,7 @@
 package com.cerofour.MiniGram.shared.infrastructure;
 
+import com.cerofour.MiniGram.auth.domain.exception.BadCredentialsException;
+import com.cerofour.MiniGram.user.domain.exception.UserNotFoundException;
 import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,18 +55,14 @@ public class GlobalExceptionHandler {
     }
 
     // 📌 3️⃣ No encontrado (404)
-//    @ExceptionHandler({
-//            CashierNotFoundException.class,
-//            ReservationNotFoundException.class,
-//            UsernameNotFoundException.class,
-//            CanchaNotFoundException.class,
-//            PaymentDoesntExistsException.class
-//    })
-//    public ResponseEntity<ApiError> handleNotFound(RuntimeException ex) {
-//        var error = new ApiError(ex.getMessage(), 404, LocalDateTime.now());
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-//    }
-//
+    @ExceptionHandler({
+            UserNotFoundException.class
+    })
+    public ResponseEntity<ApiError> handleNotFound(RuntimeException ex) {
+        var error = new ApiError(ex.getMessage(), 404, LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     // 📌 4️⃣ Regla de negocio o conflicto (400)
     @ExceptionHandler({
         UsernameInvalidException.class
@@ -73,21 +71,21 @@ public class GlobalExceptionHandler {
         var error = new ApiError(ex.getMessage(), 400, LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-//
-//    // 📌 5️⃣ Errores de autenticación (400)
-//    @ExceptionHandler({
-//            UsernameInvalidException.class,
-//    })
-//    public ResponseEntity<ApiError> handleAuthErrors(RuntimeException ex) {
-//
-//        String msg = ex.getMessage();
-//
-//        if (ex.getMessage() == null)
-//            msg = "Error de autenticación";
-//
-//        var error = new ApiError(msg, 400, LocalDateTime.now());
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-//    }
+
+//    // 📌 5️⃣ Errores de autenticación (401)
+    @ExceptionHandler({
+            BadCredentialsException.class,
+    })
+    public ResponseEntity<ApiError> handleAuthErrors(RuntimeException ex) {
+
+        String msg = ex.getMessage();
+
+        if (ex.getMessage() == null)
+            msg = "Error de autenticación";
+
+        var error = new ApiError(msg, 401, LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
 
     // 📌 6️⃣ Cualquier otro error no controlado (500)
     @ExceptionHandler(Exception.class)
