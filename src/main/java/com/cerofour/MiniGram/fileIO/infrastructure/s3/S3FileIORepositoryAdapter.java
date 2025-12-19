@@ -1,0 +1,27 @@
+package com.cerofour.MiniGram.fileIO.infrastructure.s3;
+
+import com.cerofour.MiniGram.fileIO.application.out.FileRepositoryPort;
+import io.awspring.cloud.s3.S3Template;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.time.Duration;
+
+@Repository
+@RequiredArgsConstructor
+public class S3FileIORepositoryAdapter implements FileRepositoryPort {
+
+    private final S3Template s3Template;
+
+    @Override
+    public URL getSignedURL(String parent, String key, Duration duration) {
+        return s3Template.createSignedGetURL(parent, key, duration);
+    }
+
+    @Override
+    public void upload(String parent, String key, InputStream is) {
+        s3Template.upload(parent, key, is);
+    }
+}
