@@ -1,6 +1,8 @@
 package com.cerofour.MiniGram.fileIO.infrastructure.s3;
 
 import com.cerofour.MiniGram.fileIO.application.out.FileRepositoryPort;
+import com.cerofour.MiniGram.shared.infrastructure.FileUtils;
+import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,7 +23,9 @@ public class S3FileIORepositoryAdapter implements FileRepositoryPort {
     }
 
     @Override
-    public void upload(String parent, String key, InputStream is) {
-        s3Template.upload(parent, key, is);
+    public void upload(String parent, String key, String filename, InputStream is) {
+        s3Template.upload(parent, key, is, ObjectMetadata.builder()
+                        .contentType(FileUtils.getContentType(filename))
+                        .build());
     }
 }

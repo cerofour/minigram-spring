@@ -21,5 +21,5 @@ public interface FileRepositoryPort {
      * @param key Specifies how to identify the file inside 'parent'
      * @param is Data
      */
-    void upload(String parent, String key, InputStream is);
+    void upload(String parent, String key, String filename, InputStream is);
 }

@@ -18,15 +18,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @NotNull
     @Override
     @SneakyThrows
-    public UserDetails loadUserByUsername(String email) {
-        var user = findUserUseCase.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con email: " + email));
+    public UserDetails loadUserByUsername(String username) {
+        var user = findUserUseCase.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con username: " + username));
 
         // Create a single authority from the "rol" column
         //var authorities = List.of(new SimpleGrantedAuthority(usuario.getRol()));
 
         return User.builder()
-                .username(user.getEmail())
+                .username(user.getUsername())
                 .password(user.getPassword())
                 //.authorities(authorities)
                 .disabled(false)

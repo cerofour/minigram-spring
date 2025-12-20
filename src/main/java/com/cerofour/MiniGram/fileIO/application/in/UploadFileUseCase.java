@@ -10,5 +10,5 @@ public interface UploadFileUseCase {
      * @param key Specifies how to identify the file inside 'parent'
      * @param is Data
      */
-    void uploadWithIS(String parent, String key, InputStream is);
+    void uploadWithIS(String parent, String key, String filename, InputStream is);
 }

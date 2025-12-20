@@ -22,7 +22,7 @@ public class FileIOService implements FindFileUseCase, UploadFileUseCase {
     }
 
     @Override
-    public void uploadWithIS(String parent, String key, InputStream is) {
-        repositoryPort.upload(parent, key, is);
+    public void uploadWithIS(String parent, String key, String filename, InputStream is) {
+        repositoryPort.upload(parent, key, filename, is);
     }
 }
