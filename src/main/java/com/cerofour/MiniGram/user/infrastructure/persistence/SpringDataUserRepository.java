@@ -1,5 +1,6 @@
 package com.cerofour.MiniGram.user.infrastructure.persistence;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,7 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, Inte
     Optional<UserEntity> findByEmail(String email);
 
     @Modifying // Indica que es un UPDATE/DELETE
+    @Transactional
     @Query("UPDATE UserEntity u SET u.fullname = :fullname, u.gender = :gender, u.birthdate = :birthdate WHERE u.id = :id")
     int updateBasicInfo(@Param("id") Integer id,
                         @Param("fullname") String fullname,
