@@ -2,6 +2,7 @@ package com.cerofour.MiniGram.user.application.in;
 
 import com.cerofour.MiniGram.user.domain.User;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,6 @@ public interface FindUserUseCase {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(Integer id);
+
+    URL getUserProfilePicturePreSignedURL(User user);
 }

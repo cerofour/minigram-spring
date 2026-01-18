@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,6 +62,15 @@ public class UserService implements CreateUserUseCase, FindUserUseCase, UpdateUs
     @Override
     public Optional<User> findById(Integer id) {
         return userRepositoryPort.findById(id);
+    }
+
+    @Override
+    public URL getUserProfilePicturePreSignedURL(User u) {
+        return fileRepositoryPort.getSignedURL(
+                "minigram-s3-bucket",
+                String.format("%s/%d", "profile_pictures", u.getId()),
+                Duration.ofMinutes(30)
+        );
     }
 
     @Override
