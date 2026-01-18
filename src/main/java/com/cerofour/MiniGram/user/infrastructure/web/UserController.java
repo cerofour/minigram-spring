@@ -115,7 +115,7 @@ public class UserController {
      */
     @GetMapping("/{username}")
     public ResponseEntity<UserProfileResult> getUserProfile(
-            @PathVariable(required = true) String username
+            @PathVariable() String username
     ) {
 
         UserProfile userProfile = getUserUseCase.getUserProfile(username);
@@ -128,7 +128,7 @@ public class UserController {
 
     @GetMapping("/{username}/profilePicture")
     public ResponseEntity<UserProfilePictureResult> getUserProfilePicture(
-            @PathVariable(required = true) String username
+            @PathVariable() String username
     ) {
 
         User user = getUserUseCase.findByUsername(username)

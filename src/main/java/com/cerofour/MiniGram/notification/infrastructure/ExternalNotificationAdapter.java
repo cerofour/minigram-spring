@@ -10,8 +10,6 @@ import org.springframework.mail.SimpleMailMessage;
 @RequiredArgsConstructor
 public class ExternalNotificationAdapter implements NotificationPort {
 
-    private final MailSender mailSender;
-
     @Override
     public void suscribeToEmailService(String email) {
         System.out.printf("Subscribing %s to notification service.", email);
@@ -19,11 +17,10 @@ public class ExternalNotificationAdapter implements NotificationPort {
 
     @Override
     public void sendNotification(String email, String message) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("llacsahuanga.buques@gmail.com");
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("test subject");
-        simpleMailMessage.setText(message);
-        this.mailSender.send(simpleMailMessage);
+        System.out.printf(
+                """
+                        MAILTO <%s>:\s
+                        
+                        %s""", email, message);
     }
 }

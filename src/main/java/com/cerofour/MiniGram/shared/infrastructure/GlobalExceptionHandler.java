@@ -3,6 +3,7 @@ package com.cerofour.MiniGram.shared.infrastructure;
 import com.cerofour.MiniGram.auth.domain.exception.BadCredentialsException;
 import com.cerofour.MiniGram.user.domain.exception.UserNotFoundException;
 import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
+import com.cerofour.MiniGram.user_follows.domain.exception.InvalidFollowException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -65,7 +66,8 @@ public class GlobalExceptionHandler {
 
     // 📌 4️⃣ Regla de negocio o conflicto (400)
     @ExceptionHandler({
-        UsernameInvalidException.class
+        UsernameInvalidException.class,
+            InvalidFollowException.class
     })
     public ResponseEntity<ApiError> handleBusinessErrors(RuntimeException ex) {
         var error = new ApiError(ex.getMessage(), 400, LocalDateTime.now());
