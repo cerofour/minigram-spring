@@ -3,6 +3,7 @@ package com.cerofour.MiniGram.user.infrastructure.persistence;
 import com.cerofour.MiniGram.shared.infrastructure.DateUtils;
 import com.cerofour.MiniGram.user.application.out.UserRepositoryPort;
 import com.cerofour.MiniGram.user.domain.User;
+import com.cerofour.MiniGram.user.domain.UserProfile;
 import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
 import com.cerofour.MiniGram.user.infrastructure.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +69,11 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Optional<User> findById(Integer id) {
         return Optional.empty();
+    }
+
+    @Override
+    public UserProfile getUserProfile(User u) {
+        return userRepository.getUserProfile(u.getId());
     }
 
     @Override

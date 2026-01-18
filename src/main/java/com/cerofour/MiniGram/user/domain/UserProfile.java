@@ -1,23 +1,24 @@
-package com.cerofour.MiniGram.user.infrastructure.web.dto;
+package com.cerofour.MiniGram.user.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-@Builder
+@Setter
 @Getter
-public class MyProfileResult {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserProfile {
     private Integer id;
     private String username;
     private String fullname;
     private String email;
-    private Character gender;
+    private Integer gender;
     private Date birthdate;
     private Timestamp createdAt;
-    private URL profilePicturePreSignedURL;
+
+    // socials
 
     private Long followerCount;
     private Long followingCount;

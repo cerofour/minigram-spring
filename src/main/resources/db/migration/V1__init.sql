@@ -6,7 +6,7 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     fullname VARCHAR(64) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT now(),
+    created_at TIMESTAMP DEFAULT NOW(),
     gender INT, -- Podrías considerar usar un ENUM o SMALLINT
     birthdate DATE NOT NULL
 );

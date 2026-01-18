@@ -1,6 +1,7 @@
 package com.cerofour.MiniGram.user.infrastructure;
 
 import com.cerofour.MiniGram.user.domain.User;
+import com.cerofour.MiniGram.user.domain.UserProfile;
 import com.cerofour.MiniGram.user.infrastructure.persistence.UserEntity;
 import com.cerofour.MiniGram.user.infrastructure.web.dto.MyProfileResult;
 import com.cerofour.MiniGram.user.infrastructure.web.dto.UserProfileResult;
@@ -45,27 +46,32 @@ public class UserMapper {
                 .build();
     }
 
-    static public MyProfileResult toMyProfileResult(User u, URL profilePictureUrl) {
+    static public MyProfileResult toMyProfileResult(UserProfile u, URL profilePictureUrl) {
         return MyProfileResult.builder()
                 .id(u.getId())
                 .fullname(u.getFullname())
                 .username(u.getUsername())
                 .email(u.getEmail())
                 .birthdate(u.getBirthdate())
-                .gender(u.getGender().equals((short) 1) ? 'M' : 'F')
+                .gender(u.getGender().equals(1) ? 'M' : 'F')
                 .profilePicturePreSignedURL(profilePictureUrl)
                 .createdAt(u.getCreatedAt())
+                .followerCount(u.getFollowerCount())
+                .followingCount(u.getFollowingCount())
+                .likeCount(u.getLikeCount())
                 .build();
-
     }
 
-    static public UserProfileResult toUserProfileResult(User u, URL profilePictureUrl) {
+    static public UserProfileResult toUserProfileResult(UserProfile u, URL profilePictureUrl) {
         return UserProfileResult.builder()
                 .fullname(u.getFullname())
                 .username(u.getUsername())
                 .birthdate(u.getBirthdate())
-                .gender(u.getGender().equals((short) 1) ? 'M' : 'F')
+                .gender(u.getGender().equals(1) ? 'M' : 'F')
                 .profilePicturePreSignedURL(profilePictureUrl)
+                .followerCount(u.getFollowerCount())
+                .followingCount(u.getFollowingCount())
+                .likeCount(u.getLikeCount())
                 .build();
     }
 }

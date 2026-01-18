@@ -5,10 +5,12 @@ import com.cerofour.MiniGram.fileIO.application.out.FileRepositoryPort;
 import com.cerofour.MiniGram.shared.domain.UseCase;
 import com.cerofour.MiniGram.shared.infrastructure.DateUtils;
 import com.cerofour.MiniGram.user.application.in.CreateUserUseCase;
-import com.cerofour.MiniGram.user.application.in.FindUserUseCase;
+import com.cerofour.MiniGram.user.application.in.GetUserUseCase;
 import com.cerofour.MiniGram.user.application.in.UpdateUserUseCase;
 import com.cerofour.MiniGram.user.application.out.UserRepositoryPort;
 import com.cerofour.MiniGram.user.domain.User;
+import com.cerofour.MiniGram.user.domain.UserProfile;
+import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
-public class UserService implements CreateUserUseCase, FindUserUseCase, UpdateUserUseCase {
+public class UserService implements CreateUserUseCase, GetUserUseCase, UpdateUserUseCase {
 
     private final UserRepositoryPort userRepositoryPort;
     private final EncryptionPort encryptionPort;
@@ -62,6 +64,15 @@ public class UserService implements CreateUserUseCase, FindUserUseCase, UpdateUs
     @Override
     public Optional<User> findById(Integer id) {
         return userRepositoryPort.findById(id);
+    }
+
+    @Override
+    public UserProfile getUserProfile(String username) {
+
+        User u = userRepositoryPort.findByUsername(username)
+                .orElseThrow(UsernameInvalidException::new);
+
+        return userRepositoryPort.getUserProfile(u);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.cerofour.MiniGram.configuration;
 
-import com.cerofour.MiniGram.user.application.in.FindUserUseCase;
+import com.cerofour.MiniGram.user.application.in.GetUserUseCase;
 import com.cerofour.MiniGram.user.domain.exception.UserNotFoundException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.User;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final FindUserUseCase findUserUseCase;
+    private final GetUserUseCase getUserUseCase;
 
     @NotNull
     @Override
     @SneakyThrows
     public UserDetails loadUserByUsername(String username) {
-        var user = findUserUseCase.findByUsername(username)
+        var user = getUserUseCase.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con username: " + username));
 
         // Create a single authority from the "rol" column

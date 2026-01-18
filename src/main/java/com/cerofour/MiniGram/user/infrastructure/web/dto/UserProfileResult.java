@@ -4,8 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Builder
 @Getter
@@ -13,6 +12,10 @@ public class UserProfileResult {
     private String username;
     private String fullname;
     private Character gender;
-    private LocalDate birthdate;
+    private Date birthdate;
     private URL profilePicturePreSignedURL;
+
+    private Long followerCount;
+    private Long followingCount;
+    private Long likeCount;
 }

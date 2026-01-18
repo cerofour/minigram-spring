@@ -1,9 +1,10 @@
 package com.cerofour.MiniGram.user.infrastructure.web;
 
 import com.cerofour.MiniGram.auth.domain.exception.UserNotAuthenticatedException;
-import com.cerofour.MiniGram.user.application.in.FindUserUseCase;
+import com.cerofour.MiniGram.user.application.in.GetUserUseCase;
 import com.cerofour.MiniGram.user.application.in.UpdateUserUseCase;
 import com.cerofour.MiniGram.user.domain.User;
+import com.cerofour.MiniGram.user.domain.UserProfile;
 import com.cerofour.MiniGram.user.domain.exception.UserNotFoundException;
 import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
 import com.cerofour.MiniGram.user.infrastructure.UserMapper;
@@ -29,14 +30,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final FindUserUseCase findUserUseCase;
+    private final GetUserUseCase getUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping("")
     List<UserResult> listAllUsers(
             @PageableDefault(page = 0, size = 20, sort = "created_at", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        return findUserUseCase.all(pageable.getPageNumber(), pageable.getPageSize())
+        return getUserUseCase.all(pageable.getPageNumber(), pageable.getPageSize())
                 .stream()
                 .map(UserMapper::toWebResult)
                 .toList();
@@ -46,17 +47,12 @@ public class UserController {
 
     //region My Profile
     @PostMapping("/me")
-    public ResponseEntity<UserResult> updateMyProfile(
+    public ResponseEntity<Void> updateMyProfile(
             @AuthenticationPrincipal UserDetails userDetails, // Spring Security nos da el usuario actual
             @RequestBody @Valid UpdateUserRequest request
     ) {
 
-        return ResponseEntity.ok(UserMapper.toWebResult(
-                updateUserUseCase.updateUserData(
-                    userDetails.getUsername(),
-                    request.getFullname(),
-                    request.getGender(),
-                    request.getBirthdate())));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/me")
@@ -64,12 +60,14 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
 
-        User currentUser = findUserUseCase.findByUsername(userDetails.getUsername())
-                .orElseThrow(UserNotAuthenticatedException::new);
+        URL preSignedUrl = getUserUseCase.getUserProfilePicturePreSignedURL(
+                getUserUseCase.findByUsername(userDetails.getUsername()).orElseThrow(UsernameInvalidException::new)
+        );
+        UserProfile currentUser = getUserUseCase.getUserProfile(userDetails.getUsername());
 
         return ResponseEntity.ok(UserMapper.toMyProfileResult(
                 currentUser,
-                findUserUseCase.getUserProfilePicturePreSignedURL(currentUser)
+                preSignedUrl
         ));
     }
 
@@ -95,10 +93,10 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
 
-        User currentUser = findUserUseCase.findByUsername(userDetails.getUsername())
+        User currentUser = getUserUseCase.findByUsername(userDetails.getUsername())
                 .orElseThrow(UserNotFoundException::new);
 
-        URL preSignedUrl = findUserUseCase.getUserProfilePicturePreSignedURL(currentUser);
+        URL preSignedUrl = getUserUseCase.getUserProfilePicturePreSignedURL(currentUser);
 
         return ResponseEntity.ok(
                 UserProfilePictureResult.builder()
@@ -120,12 +118,11 @@ public class UserController {
             @PathVariable(required = true) String username
     ) {
 
-        User currentUser = findUserUseCase.findByUsername(username)
-                .orElseThrow(UsernameInvalidException::new);
+        UserProfile userProfile = getUserUseCase.getUserProfile(username);
 
         return ResponseEntity.ok(UserMapper.toUserProfileResult(
-                currentUser,
-                findUserUseCase.getUserProfilePicturePreSignedURL(currentUser)
+                userProfile,
+                getUserUseCase.getUserProfilePicturePreSignedURL(User.builder().id(userProfile.getId()).build())
         ));
     }
 
@@ -134,11 +131,11 @@ public class UserController {
             @PathVariable(required = true) String username
     ) {
 
-        User currentUser = findUserUseCase.findByUsername(username)
+        User user = getUserUseCase.findByUsername(username)
                 .orElseThrow(UsernameInvalidException::new);
 
         return ResponseEntity.ok(UserProfilePictureResult.builder()
-                .preSignedUrl(findUserUseCase.getUserProfilePicturePreSignedURL(currentUser))
+                .preSignedUrl(getUserUseCase.getUserProfilePicturePreSignedURL(user))
                 .build()
         );
     }

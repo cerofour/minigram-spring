@@ -2,6 +2,7 @@ package com.cerofour.MiniGram.user.infrastructure.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,5 +33,7 @@ public class UserEntity {
 
     private LocalDate birthdate;
 
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 }
