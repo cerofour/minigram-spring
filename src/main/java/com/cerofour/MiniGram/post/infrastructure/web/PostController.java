@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/v1/users/posts")
+@RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -46,5 +46,4 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
-
 }
