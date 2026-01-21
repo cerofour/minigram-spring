@@ -18,6 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @NotNull
     @Override
     @SneakyThrows
+    // TODO: Enrich UserDetails to store the userId
     public UserDetails loadUserByUsername(String username) {
         var user = getUserUseCase.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con username: " + username));
