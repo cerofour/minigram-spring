@@ -1,6 +1,9 @@
 package com.cerofour.MiniGram.user.application;
 
 import com.cerofour.MiniGram.auth.application.out.EncryptionPort;
+import com.cerofour.MiniGram.fileIO.application.CreateFileUseCaseImpl;
+import com.cerofour.MiniGram.fileIO.application.in.CreateFileUseCase;
+import com.cerofour.MiniGram.fileIO.application.in.GetFileUseCase;
 import com.cerofour.MiniGram.fileIO.application.out.FileRepositoryPort;
 import com.cerofour.MiniGram.shared.domain.UseCase;
 import com.cerofour.MiniGram.shared.infrastructure.DateUtils;
@@ -28,7 +31,8 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, UpdateUse
 
     private final UserRepositoryPort userRepositoryPort;
     private final EncryptionPort encryptionPort;
-    private final FileRepositoryPort fileRepositoryPort;
+    private final CreateFileUseCase createFileUseCase;
+    private final GetFileUseCase getFileUseCase;
 
     @Override
     public Optional<User> createUser(User u) {
@@ -77,11 +81,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, UpdateUse
 
     @Override
     public URL getUserProfilePicturePreSignedURL(User u) {
-        return fileRepositoryPort.getSignedURL(
-                "minigram-s3-bucket",
-                String.format("%s/%d", "profile_pictures", u.getId()),
-                Duration.ofMinutes(30)
-        );
+        return getFileUseCase.getProfilePicture(u);
     }
 
     @Override
@@ -89,8 +89,7 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, UpdateUse
         User u = userRepositoryPort.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("'%s' username not found.", username)));
 
-        fileRepositoryPort.upload("minigram-s3-bucket",
-                String.format("%s/%d","profile_pictures", u.getId()), filename, profilePictureIs);
+        createFileUseCase.createProfilePicture(u, filename, profilePictureIs);
 
         return u;
     }

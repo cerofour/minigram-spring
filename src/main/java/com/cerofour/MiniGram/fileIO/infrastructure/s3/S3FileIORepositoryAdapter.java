@@ -18,14 +18,16 @@ public class S3FileIORepositoryAdapter implements FileRepositoryPort {
 
     private final S3Template s3Template;
 
+    private final String s3BucketName = "minigram-s3-bucket";
+
     @Override
-    public URL getSignedURL(String parent, String key, Duration duration) {
-        return s3Template.createSignedGetURL(parent, key, duration);
+    public URL getSignedURL(String key, Duration duration) {
+        return s3Template.createSignedGetURL(s3BucketName, key, duration);
     }
 
     @Override
-    public void upload(String parent, String key, String filename, InputStream is) {
-        s3Template.upload(parent, key, is, ObjectMetadata.builder()
+    public void upload(String key, String filename, InputStream is) {
+        s3Template.upload(s3BucketName, key, is, ObjectMetadata.builder()
                         .contentType(FileUtils.getContentType(filename))
                         .build());
     }
