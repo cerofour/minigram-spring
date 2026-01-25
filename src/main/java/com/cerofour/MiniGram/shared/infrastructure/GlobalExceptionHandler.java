@@ -92,6 +92,9 @@ public class GlobalExceptionHandler {
     // 📌 6️⃣ Cualquier otro error no controlado (500)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex) {
+
+        ex.printStackTrace();
+
         var error = new ApiError("(ERROR NO MANEJADO) Error inesperado: " + ex.getMessage(), 500, LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }

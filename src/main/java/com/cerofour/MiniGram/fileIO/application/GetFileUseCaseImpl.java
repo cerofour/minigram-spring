@@ -27,7 +27,7 @@ public class GetFileUseCaseImpl implements GetFileUseCase {
     @Override
     public URL getPostPicture(Post post) {
         return fileRepositoryPort.getSignedURL(
-                String.format("posts/%d", post.getId().toString()),
+                String.format("posts/%s", post.getId().toString()),
                 Duration.ofMinutes(30)
         );
     }
