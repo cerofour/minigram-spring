@@ -14,5 +14,5 @@ public class Post {
     private Integer userId;
     private String description;
     private String pictureKey;
-//    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 }

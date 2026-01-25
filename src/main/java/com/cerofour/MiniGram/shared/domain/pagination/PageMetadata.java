@@ -1,8 +1,11 @@
 package com.cerofour.MiniGram.shared.domain.pagination;
 
-public record PageRequest(
+public record PageMetadata(
         int size,
         int page,
+        int numberOfElements,
+        long totalElements,
+        int totalPages,
         Sort sort
 ) {
 

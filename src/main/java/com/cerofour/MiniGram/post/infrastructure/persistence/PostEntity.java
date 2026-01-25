@@ -27,7 +27,7 @@ public class PostEntity {
 
     private String pictureLink;
 
-//    @CreationTimestamp
-//    @Column(name = "created_at", updatable = false, nullable = false)
-//    private Timestamp createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private Timestamp createdAt;
 }
