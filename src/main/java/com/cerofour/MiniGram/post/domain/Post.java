@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 public class Post {
     private UUID id;
-    private User user;
+    private Integer userId;
     private String description;
 
     @Setter

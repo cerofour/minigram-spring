@@ -12,7 +12,6 @@ import java.util.UUID;
 public class PostResult {
 
     UUID postId;
-    String username;
     String description;
     String preSignedURL;
     LocalDateTime createdAt;
