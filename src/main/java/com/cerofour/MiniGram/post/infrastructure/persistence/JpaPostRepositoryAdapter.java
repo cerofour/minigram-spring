@@ -1,5 +1,6 @@
 package com.cerofour.MiniGram.post.infrastructure.persistence;
 
+import com.cerofour.MiniGram.post.application.dto.PostWithUserDetails;
 import com.cerofour.MiniGram.post.application.out.PostRepositoryPort;
 import com.cerofour.MiniGram.post.domain.Post;
 import com.cerofour.MiniGram.post.infrastructure.PostMapper;
@@ -40,5 +41,13 @@ public class JpaPostRepositoryAdapter implements PostRepositoryPort {
         PaginatedResult<Post> result = new PaginatedResult<Post>(posts.getContent(), PaginationMapper.from(posts));
 
         return result;
+    }
+
+    @Override
+    public PaginatedResult<PostWithUserDetails> getFeed(Integer userId, PageMetadata pm) {
+
+        Page<PostWithUserDetails> feed = postRepository.getFeedForUserWithId(userId, PaginationMapper.toPageable(pm));
+
+        return PaginationMapper.paginatedResultFrom(feed);
     }
 }

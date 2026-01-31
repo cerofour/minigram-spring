@@ -1,5 +1,7 @@
 package com.cerofour.MiniGram.post.infrastructure.web;
 
+import com.cerofour.MiniGram.post.application.dto.PostWithUserDetails;
+import com.cerofour.MiniGram.post.application.in.GetFeedUseCase;
 import com.cerofour.MiniGram.post.application.in.GetPostsUseCase;
 import com.cerofour.MiniGram.post.application.in.CreatePostUseCase;
 import com.cerofour.MiniGram.post.domain.Post;
@@ -33,6 +35,7 @@ public class PostController {
     private final CreatePostUseCase createPostUseCase;
     private final GetPostsUseCase getPostsUseCase;
     private final GetUserUseCase getUserUseCase;
+    private final GetFeedUseCase getFeedUseCase;
 
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,5 +75,17 @@ public class PostController {
         );
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/feed")
+    public ResponseEntity<PaginatedResult<PostWithUserDetails>> getFeed(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+
+        User u = getUserUseCase.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Unreacheable, @AuthenticationPrincipal instantiated without valid user details??"));
+
+        return ResponseEntity.ok(getFeedUseCase.getFeed(u, PaginationMapper.from(pageable)));
     }
 }

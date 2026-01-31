@@ -14,7 +14,7 @@ public class PostMapper {
                 .userId(save.getUserId())
                 .description(save.getDescription())
                 .pictureKey(String.format("posts/%s", save.getId().toString()))
-                .createdAt(save.getCreatedAt().toLocalDateTime())
+                .createdAt(save.getCreatedAt())
                 .build();
     }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +30,5 @@ public class PostEntity {
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
-    private Timestamp createdAt;
+    private Instant createdAt;
 }

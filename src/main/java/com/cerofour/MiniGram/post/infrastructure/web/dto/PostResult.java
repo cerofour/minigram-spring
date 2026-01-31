@@ -3,8 +3,7 @@ package com.cerofour.MiniGram.post.infrastructure.web.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Builder
@@ -14,6 +13,6 @@ public class PostResult {
     UUID postId;
     String description;
     String preSignedURL;
-    LocalDateTime createdAt;
+    Instant createdAt;
 
 }

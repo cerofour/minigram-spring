@@ -1,6 +1,9 @@
 package com.cerofour.MiniGram.shared.infrastructure;
 
+import com.cerofour.MiniGram.post.application.dto.PostWithUserDetails;
+import com.cerofour.MiniGram.post.domain.Post;
 import com.cerofour.MiniGram.shared.domain.pagination.PageMetadata;
+import com.cerofour.MiniGram.shared.domain.pagination.PaginatedResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -80,4 +83,7 @@ public class PaginationMapper {
     }
 
 
+    public static PaginatedResult paginatedResultFrom(Page feed) {
+        return new PaginatedResult<>(feed.getContent(), PaginationMapper.from(feed));
+    }
 }
