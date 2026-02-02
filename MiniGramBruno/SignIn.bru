@@ -1,0 +1,18 @@
+meta {
+  name: SignIn
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/auth/signIn
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "diego.exe",
+    "password": "diego123"
+  }
+}

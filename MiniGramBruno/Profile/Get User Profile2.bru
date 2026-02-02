@@ -1,0 +1,15 @@
+meta {
+  name: Get User Profile2
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{base_url}}/users/diego.exe
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{user_token}}
+}

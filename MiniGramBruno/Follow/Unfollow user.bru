@@ -1,0 +1,11 @@
+meta {
+  name: Unfollow user
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{base_url}}/users/diego.exe/follows
+  body: none
+  auth: inherit
+}

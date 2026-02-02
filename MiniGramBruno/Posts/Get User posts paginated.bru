@@ -1,0 +1,21 @@
+meta {
+  name: Get User posts paginated
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/users/diego.exe/posts?size=10&page=0&sort=createdAt
+  body: none
+  auth: bearer
+}
+
+params:query {
+  size: 10
+  page: 0
+  sort: createdAt
+}
+
+auth:bearer {
+  token: {{user_token}}
+}

@@ -1,0 +1,22 @@
+meta {
+  name: SignUp
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/auth/signUp
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "charly.exe",
+    "birthdate": "2005-04-20",
+    "gender": "M",
+    "fullname": "Charly Llacsahuanga",
+    "email": "U22203351@utp.edu.pe",
+    "password": "diego123"
+  }
+}

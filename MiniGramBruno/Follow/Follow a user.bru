@@ -1,0 +1,15 @@
+meta {
+  name: Follow a user
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/users/diego.exe/follows
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{user_token}}
+}

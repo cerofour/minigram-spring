@@ -1,0 +1,23 @@
+meta {
+  name: Update User Basic Data
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/user/me
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{user_token}}
+}
+
+body:json {
+  {
+    "fullname": "Charly Blue",
+    "gender": "M",
+    "birthdate": "2000-04-20"
+  }
+}
