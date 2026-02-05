@@ -4,6 +4,7 @@ import com.cerofour.MiniGram.auth.domain.exception.BadCredentialsException;
 import com.cerofour.MiniGram.user.domain.exception.UserNotFoundException;
 import com.cerofour.MiniGram.user.domain.exception.UsernameInvalidException;
 import com.cerofour.MiniGram.user_follows.domain.exception.InvalidFollowException;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Hidden
+@Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
