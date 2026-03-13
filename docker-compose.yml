@@ -1,0 +1,65 @@
+services:
+
+  # ===============================
+  # PostgreSQL (emula RDS local)
+  # ===============================
+  postgres:
+    image: postgres:17
+    container_name: minigram-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: minigram
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d minigram"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===============================
+  # LocalStack (S3, SNS, SES)
+  # ===============================
+  localstack:
+    image: localstack/localstack:3
+    container_name: minigram-localstack
+    restart: unless-stopped
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sns,ses
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - ./infra/localstack/init:/etc/localstack/init/ready.d
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===============================
+  # Backend (Spring Boot)
+  # ===============================
+#  backend:
+#    build: .
+#    container_name: minigram-backend
+#    restart: unless-stopped
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=local
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#      localstack:
+#        condition: service_healthy
+#
+volumes:
+  postgres_data:
+  localstack_data:
