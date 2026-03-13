@@ -20,7 +20,7 @@ public class S3FileIORepositoryAdapter implements FileRepositoryPort {
     private final S3Template s3Template;
 
     @Value(value = "${spring.cloud.aws.s3.bucket}")
-    private final String s3BucketName = "minigram-s3-bucket";
+    private String s3BucketName;
 
     @Override
     public URL getSignedURL(String key, Duration duration) {
