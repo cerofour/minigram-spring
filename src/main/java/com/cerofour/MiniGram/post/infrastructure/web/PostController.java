@@ -1,5 +1,7 @@
 package com.cerofour.MiniGram.post.infrastructure.web;
 
+import com.cerofour.MiniGram.like.application.in.ToggleLikeUseCase;
+import com.cerofour.MiniGram.like.domain.LikeResult;
 import com.cerofour.MiniGram.post.application.dto.PostWithUserDetails;
 import com.cerofour.MiniGram.post.application.in.GetFeedUseCase;
 import com.cerofour.MiniGram.post.application.in.GetPostsUseCase;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -36,8 +39,9 @@ public class PostController {
     private final GetPostsUseCase getPostsUseCase;
     private final GetUserUseCase getUserUseCase;
     private final GetFeedUseCase getFeedUseCase;
+    private final ToggleLikeUseCase likePostUseCase;
 
-    @PostMapping("/posts")
+    @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createPost(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -59,7 +63,20 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/users/{username}/posts")
+    @PostMapping("/post/{postId}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<LikeResult> likePost(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable UUID postId
+    ) {
+
+        User currentUser = getUserUseCase.findByUsername(userDetails.getUsername())
+                .orElseThrow(UsernameInvalidException::new);
+
+        return ResponseEntity.ok(likePostUseCase.likePost(postId, currentUser.getId()));
+    }
+
+    @GetMapping("/user/{username}/posts")
     public ResponseEntity<PaginatedResult<PostResult>> getPostsByUsername(
             @PathVariable String username,
             @PageableDefault(size = 10, sort = "userId", direction = Sort.Direction.DESC) Pageable pageable

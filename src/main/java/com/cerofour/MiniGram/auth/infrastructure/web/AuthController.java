@@ -42,7 +42,7 @@ public class AuthController {
                 .build();
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResult> signIn(@RequestBody @Valid SignInUserRequest request) {
 
         return ResponseEntity.ok(signInUseCase.signIn(
