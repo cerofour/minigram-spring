@@ -4,7 +4,6 @@ import com.cerofour.MiniGram.fileIO.application.in.GetFileUseCase;
 import com.cerofour.MiniGram.fileIO.application.out.FileRepositoryPort;
 import com.cerofour.MiniGram.post.domain.Post;
 import com.cerofour.MiniGram.shared.domain.UseCase;
-import com.cerofour.MiniGram.user.domain.User;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URL;
@@ -17,9 +16,9 @@ public class GetFileUseCaseImpl implements GetFileUseCase {
     private final FileRepositoryPort fileRepositoryPort;
 
     @Override
-    public URL getProfilePicture(User user) {
+    public URL getProfilePicture(Integer userId) {
         return fileRepositoryPort.getSignedURL(
-                String.format("%s/%d", "profile_pictures", user.getId()),
+                String.format("%s/%s", "profile_pictures", userId.toString()),
                 Duration.ofMinutes(30)
         );
     }

@@ -24,12 +24,15 @@ public class GetFeedUseCaseImpl implements GetFeedUseCase {
         PaginatedResult<PostWithUserDetails> feed = postRepositoryPort.getFeed(u.getId(), pm);
 
         feed.data().forEach(
-                x -> x.setPictureLink(
-                        getFileUseCase.getPostPicture(
-                                Post.builder()
-                                        .id(x.getId())
-                                        .build())
-                                .toString())
+                x -> {
+                    x.setPictureLink(
+                            getFileUseCase.getPostPicture(
+                                            Post.builder()
+                                                    .id(x.getId())
+                                                    .build())
+                                    .toString());
+                    x.setUserProfilePictureLink(getFileUseCase.getProfilePicture(x.getUserId()).toString());
+                }
         );
 
         return feed;

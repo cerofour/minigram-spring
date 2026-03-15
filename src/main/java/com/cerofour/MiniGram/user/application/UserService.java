@@ -80,8 +80,8 @@ public class UserService implements CreateUserUseCase, GetUserUseCase, UpdateUse
     }
 
     @Override
-    public URL getUserProfilePicturePreSignedURL(User u) {
-        return getFileUseCase.getProfilePicture(u);
+    public URL getUserProfilePicturePreSignedURL(Integer userId) {
+        return getFileUseCase.getProfilePicture(userId);
     }
 
     @Override
