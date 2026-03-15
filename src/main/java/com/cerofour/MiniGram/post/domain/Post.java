@@ -18,4 +18,8 @@ public class Post {
     @Setter
     private String pictureKey;
     private Instant createdAt;
+
+    // Defined counters to make calculations faster
+    private Integer likeCount;
+    private Integer commentCount;
 }

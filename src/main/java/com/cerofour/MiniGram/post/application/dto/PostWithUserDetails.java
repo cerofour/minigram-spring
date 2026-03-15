@@ -20,6 +20,12 @@ public class PostWithUserDetails {
     // user
     private Integer userId;
     private String username;
+    @Setter
+    private String userProfilePictureLink;
 
     private Instant createdAt;
+
+    // Counterso
+    private Long likeCount;
+    private Integer commentCount;
 }
