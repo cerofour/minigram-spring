@@ -15,36 +15,40 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
 
     @Query(
             value = """
-                    SELECT
-                        p.id            AS id,
-                        p.picture_link  AS pictureLink,
-                        p.description   AS description,
-                        p.user_id       AS userId,
-                        u.username      AS username,
-                        ''              AS userProfilePictureLink,
-                        p.created_at::timestamptz AS createdAt,
-                        COALESCE(lc.like_count, 0) AS likeCount,
-                        0               AS commentCount
-                    FROM user_follows f
-                    JOIN posts p
-                        ON p.user_id = f.followee_id
-                    JOIN users u
-                        ON u.id = p.user_id
-                    LEFT JOIN (
-                        SELECT post_id, COUNT(*) AS like_count
-                        FROM user_likes
-                        GROUP BY post_id
-                    ) lc ON lc.post_id = p.id
-                    WHERE f.follower_id = :userId
-                    ORDER BY p.created_at DESC
-                    """,
+                SELECT
+                    p.id                        AS id,
+                    p.picture_link              AS pictureLink,
+                    p.description               AS description,
+                    p.user_id                   AS userId,
+                    u.username                  AS username,
+                    ''                          AS userProfilePictureLink,
+                    p.created_at::timestamptz   AS createdAt,
+                    COUNT(ul.user_id)           AS likeCount,
+                    0                           AS commentCount,
+                    BOOL_OR(ul.user_id = :userId) AS liked
+                FROM user_follows f
+                JOIN posts p
+                    ON p.user_id = f.followee_id
+                JOIN users u
+                    ON u.id = p.user_id
+                LEFT JOIN user_likes ul
+                    ON ul.post_id = p.id
+                WHERE f.follower_id = :userId
+                GROUP BY
+                    p.id,
+                    p.picture_link,
+                    p.description,
+                    p.user_id,
+                    u.username,
+                    p.created_at
+                """,
             countQuery = """
-                    SELECT COUNT(*)
-                    FROM user_follows f
-                    JOIN posts p
-                        ON p.user_id = f.followee_id
-                    WHERE f.follower_id = :userId
-                    """,
+                SELECT COUNT(*)
+                FROM user_follows f
+                JOIN posts p
+                    ON p.user_id = f.followee_id
+                WHERE f.follower_id = :userId
+                """,
             nativeQuery = true
     )
     Page<PostWithUserDetails> getFeedForUserWithId(

@@ -25,7 +25,9 @@ public class PostWithUserDetails {
 
     private Instant createdAt;
 
-    // Counterso
+    // Counters
     private Long likeCount;
     private Integer commentCount;
+
+    private Boolean liked;
 }
