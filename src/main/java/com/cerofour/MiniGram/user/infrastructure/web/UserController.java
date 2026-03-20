@@ -62,6 +62,7 @@ public class UserController {
 
         URL preSignedUrl = getUserUseCase.getUserProfilePicturePreSignedURL(
                 getUserUseCase.findByUsername(userDetails.getUsername()).orElseThrow(UsernameInvalidException::new)
+                        .getId()
         );
         UserProfile currentUser = getUserUseCase.getUserProfile(userDetails.getUsername());
 
@@ -96,7 +97,7 @@ public class UserController {
         User currentUser = getUserUseCase.findByUsername(userDetails.getUsername())
                 .orElseThrow(UserNotFoundException::new);
 
-        URL preSignedUrl = getUserUseCase.getUserProfilePicturePreSignedURL(currentUser);
+        URL preSignedUrl = getUserUseCase.getUserProfilePicturePreSignedURL(currentUser.getId());
 
         return ResponseEntity.ok(
                 UserProfilePictureResult.builder()
@@ -122,7 +123,7 @@ public class UserController {
 
         return ResponseEntity.ok(UserMapper.toUserProfileResult(
                 userProfile,
-                getUserUseCase.getUserProfilePicturePreSignedURL(User.builder().id(userProfile.getId()).build())
+                getUserUseCase.getUserProfilePicturePreSignedURL(userProfile.getId())
         ));
     }
 
@@ -135,7 +136,7 @@ public class UserController {
                 .orElseThrow(UsernameInvalidException::new);
 
         return ResponseEntity.ok(UserProfilePictureResult.builder()
-                .preSignedUrl(getUserUseCase.getUserProfilePicturePreSignedURL(user))
+                .preSignedUrl(getUserUseCase.getUserProfilePicturePreSignedURL(user.getId()))
                 .build()
         );
     }

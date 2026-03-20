@@ -18,5 +18,5 @@ public interface GetUserUseCase {
 
     UserProfile getUserProfile(String username);
 
-    URL getUserProfilePicturePreSignedURL(User user);
+    URL getUserProfilePicturePreSignedURL(Integer userId);
 }
